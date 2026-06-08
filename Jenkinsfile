@@ -1,13 +1,26 @@
- "pipeline {
+pipeline {
     agent any
+
     stages {
-        stage('Build') { steps { echo 'Building...' } }
-        stage('Test') { steps { echo 'Testing...' } }
-        stage('Deploy') {
+
+        stage('Clone') {
+            steps {
+                git 'https://github.com/<your-username>/<repo>.git'
+            }
+        }
+
+        stage('Build Docker Image') {
             steps {
                 sh 'docker build -t demo-app .'
-                sh 'docker run -d --name demo-container -p 8080:8080 demo-app'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh 'docker stop demo-container || true'
+                sh 'docker rm demo-container || true'
+                sh 'docker run -d -p 3000:3000 --name demo-container demo-app'
             }
         }
     }
-}" > Jenkinsfile
+}
