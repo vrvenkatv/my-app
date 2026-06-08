@@ -1,7 +1,4 @@
-
-4. **Create a Jenkinsfile** (tells Jenkins what steps to run):
-```bash
-echo "pipeline {
+ "pipeline {
     agent any
     stages {
         stage('Build') { steps { echo 'Building...' } }
